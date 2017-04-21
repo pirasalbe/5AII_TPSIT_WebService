@@ -8,6 +8,10 @@ package webservice;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.Authenticator;
+import java.net.InetSocketAddress;
+import java.net.PasswordAuthentication;
+import java.net.Proxy;
 
 /**
  *
@@ -45,7 +49,19 @@ public class WebService {
             System.out.println(e);
         }
         
-        cf c = new cf(nome,cognome,nascita,comune,sesso);
+        Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("172.18.0.1", 3128));
+        
+        Authenticator authenticator = new Authenticator() {
+
+            @Override
+        public PasswordAuthentication getPasswordAuthentication() {
+            return (new PasswordAuthentication("esterno4",
+                    "Rossiesterno4".toCharArray()));
+        }
+    };
+    Authenticator.setDefault(authenticator);
+        
+        cf c = new cf(nome,cognome,nascita,comune,sesso, proxy);
         
         System.out.println(c.calcola());
     }

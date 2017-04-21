@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.Proxy;
 import java.net.URI;
 import java.net.URL;
 import java.util.Date;
@@ -27,13 +28,15 @@ public class cf {
     private String nascita;
     private String comune;
     private String sesso;
+    private Proxy proxy;
     
-    public cf(String nome, String cognome, String nascita, String comune, String sesso) {
+    public cf(String nome, String cognome, String nascita, String comune, String sesso, Proxy proxy) {
         this.nome = nome;
         this.cognome=cognome;
         this.nascita=nascita;
         this.comune=comune;
         this.sesso=sesso;
+        this.proxy = proxy;
     }
     
     public String calcola(){        
@@ -43,7 +46,13 @@ public class cf {
         try {
 
 		URL url = new URL(uri);
-		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                HttpURLConnection conn;
+                
+                if(proxy!=null)
+                    conn = (HttpURLConnection) url.openConnection(proxy);
+                else
+                    conn = (HttpURLConnection) url.openConnection();
+                
 		conn.setRequestMethod("GET");
 		conn.setRequestProperty("Accept", "application/json");
 
