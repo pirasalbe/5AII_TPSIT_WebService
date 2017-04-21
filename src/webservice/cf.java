@@ -56,7 +56,7 @@ public class cf {
 			(conn.getInputStream())));
 
 		String output;
-		System.out.println("Output from Server .... \n");
+		System.out.println("Output from Server .... ");
 		while ((output = br.readLine()) != null) {
 			System.out.println(output);
                         result+=output;
