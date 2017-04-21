@@ -22,7 +22,7 @@ public class WebService {
         BufferedReader in = new BufferedReader(new InputStreamReader(
 			(System.in)));
         
-        String nome, cognome, nascita, comune, sesso;
+        String nome="", cognome="", nascita="", comune="", sesso="";
         
         try{
             
@@ -45,6 +45,9 @@ public class WebService {
             System.out.println(e);
         }
         
+        cf c = new cf(nome,cognome,nascita,comune,sesso);
+        
+        System.out.println(c.calcola());
     }
     
 }
