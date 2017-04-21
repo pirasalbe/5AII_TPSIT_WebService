@@ -10,6 +10,10 @@ import java.net.Proxy;
 import java.net.URI;
 import java.net.URL;
 import java.util.Date;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /*
 * To change this license header, choose License Headers in Project Properties.
@@ -39,8 +43,8 @@ public class cf {
         this.proxy = proxy;
     }
     
-    public String calcola(){        
-        String result ="";
+    public String calcola(){   
+        Element element = null;
         String uri="http://webservices.dotnethell.it/codicefiscale.asmx/CalcolaCodiceFiscale?nome=" + nome + "&cognome=" + cognome + "&comunenascita=" + comune + "&datanascita=" + nascita + "&sesso=" + sesso;
     
         try {
@@ -60,16 +64,11 @@ public class cf {
 			throw new RuntimeException("Failed : HTTP error code : "
 					+ conn.getResponseCode());
 		}
-
-		BufferedReader br = new BufferedReader(new InputStreamReader(
-			(conn.getInputStream())));
-
-		String output;
-		System.out.println("Output from Server .... ");
-		while ((output = br.readLine()) != null) {
-			System.out.println(output);
-                        result+=output;
-		}
+                
+                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder builder = factory.newDocumentBuilder();
+                Document doc = builder.parse(conn.getInputStream());
+                element = doc.getDocumentElement();
 
 		conn.disconnect();
 
@@ -79,7 +78,7 @@ public class cf {
 
 	  }
     
-        return result;
+        return element.getTextContent();
         
     }
     
